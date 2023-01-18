@@ -1,6 +1,6 @@
 import { Args, Float, Int, Query, Resolver } from '@nestjs/graphql';
 
-@Resolver()
+@Resolver() // Es donde estaran los metodos que usara graphql
 export class HelloWorldResolver {
 
     @Query(() => String, {description: "Hola mundo esto es lo que retorna"}) //Apesar de que devuelve un string hay reiterarlo en el decorador
