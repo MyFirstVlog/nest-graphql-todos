@@ -1,4 +1,5 @@
-import { Args, Int, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CreateTodoInput, UpdateTodoInput} from './dto/input/'
 
 import { Todo } from './entity/todo.entity';
 import { TodoService } from './todo.service';
@@ -20,12 +21,18 @@ export class TodoResolver {
         return this.todoService.findOne(id);
     }
 
-    createTodo(){
-        return [];
+    @Mutation(() => Todo)
+    createTodo(   
+    @Args('createTodoInput') createTodoInput: CreateTodoInput): Todo { //El type se pone si es una de las naturaleza de los objetos comunes
+        console.log({createTodoInput});        
+        return this.todoService.createTodo(createTodoInput);
     }
 
-    updateTodo(){
-        return [];
+    @Mutation(() => Todo, {name: "updateTodo"})
+    updateTodo(
+        @Args('updateTodoInput')updateTodoInput: UpdateTodoInput
+    ): Todo{ 
+        return this.todoService.updateTodo(updateTodoInput);
     }
 
     removeTodo(){
