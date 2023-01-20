@@ -15,8 +15,11 @@ type Query {
 
   """From zero to argument(not included) and default "to" number is 10"""
   randomFromZeroTo(to: Int): Int!
-  todos: [Todo!]!
+  todos(status: Boolean): [Todo!]!
   todo(id: Int!): Todo!
+  totalTodos: Int!
+  completedTodos: Int!
+  pendingTodos: Int!
 }
 
 type Mutation {

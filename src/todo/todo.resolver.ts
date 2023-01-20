@@ -1,5 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateTodoInput, UpdateTodoInput} from './dto/input/'
+import { CreateTodoInput, UpdateTodoInput, StatusArgs} from './dto'
 
 import { Todo } from './entity/todo.entity';
 import { TodoService } from './todo.service';
@@ -12,8 +12,10 @@ export class TodoResolver {
     ){}
 
     @Query(() => [Todo], {name: "todos"})
-    findAll(): Todo[]{
-        return this.todoService.findAll();  
+    findAll(
+        @Args() statusArgs: StatusArgs //* aqui no se usa @Args('statusArgs') -> solo para los tipo Input O Scalars definidios por Graphql
+    ): Todo[]{
+        return this.todoService.findAll(statusArgs);  
     }
 
     @Query(() => Todo,  {name: "todo"})
@@ -41,5 +43,23 @@ export class TodoResolver {
     ){
         return this.todoService.removeTodo(id);
     }
+
+    //* Aggregations
+    @Query(() => Int, {name: "totalTodos"})
+    totalTodos(): number{
+        return this.todoService.totalTodos;
+    }
+
+    @Query(() => Int, {name: "completedTodos"})
+    completedTodos(){
+        return this.todoService.completedTodos;
+    }
+
+    @Query(() => Int, {name: "pendingTodos"})
+    pendingTodos(){
+        return this.todoService.pendingTodos;
+    }
+
+
 
 }
